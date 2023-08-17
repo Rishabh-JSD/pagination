@@ -1,0 +1,104 @@
+
+
+<div>
+
+</div><h2 class="class">To Do App</h2>
+<div>
+  <button type="button" class="btn btn-success"data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+    (click)="clickAddTask()">Add Task</button>&nbsp;
+
+  <table class="table table-success table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Task_No</th>
+        <th scope="col">Task_Name</th>
+        <th scope="col">Task_Description</th>
+        <th scope="col">Status</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of allTaskData; index as i">
+        <th>{{i+1}}</th>
+        <td>{{item.task_name}}</td>
+        <td>{{item.task_description}}</td>
+        <td>{{item.task_status}}</td>
+        <td>
+          <div>
+         
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="onEditTask(item)">
+                Edit</button>
+            <button type="button" class="btn btn-danger" (click)="deleteData(item)">Delete</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Modal -->
+  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">task</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="taskform">
+            <label>Task Name</label>
+            <br />
+            <input type="text" placeholder="Enter Task Name" formControlName="task_name">
+            <br>
+            <span style="color:red;"
+            *ngIf="taskform.controls['task_name'].touched && taskform.get('task_name')?.hasError('required')">*Task Name is
+            required</span>
+        <span style="color:red;"
+            *ngIf="taskform.get('task_name')?.hasError('pattern') || taskform.get('task_name')?.hasError('minlength')">*Name
+            should be in letter</span>
+            <br /> <br />
+            <label>Task Description</label>
+            <br />
+            <input type="text" placeholder="Enter Task Description" formControlName="task_description">
+            <br>
+            <span style="color:red;"
+            *ngIf="taskform.controls['task_description'].touched && taskform.get('task_description')?.hasError('required')">*Task Description is
+            required</span>
+        <span style="color:red;"
+            *ngIf="taskform.get('task_description')?.hasError('pattern') || taskform.get('task_description')?.hasError('minlength')">*Name
+            should be in letter</span>
+            <br /> <br />
+            <label>Status</label>
+            <br />
+            <select class="form-select" aria-label="Default select example" formControlName="task_status">
+              <option selected>Status</option>
+              <option value="Completed">Completed</option>
+              <option value="Pending">Pending</option>
+            </select>
+            <br />
+            <!-- <button type="button" class="btn btn-success" (click)="addTask(task.value)">Submit</button> -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button"  *ngIf="showAdd" class="btn btn-primary" data-bs-dismiss="modal"
+                (click)="addTask()">Submit</button>
+              <button type="button" *ngIf="showUpd" class="btn btn-warning" data-bs-dismiss="modal"
+                (click)="updateTaskData()">Update</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<div class="container">
+  <mat-paginator style="background-color: lightblue;top: 100%;left: 0;top: calc(100% + 5px);" 
+    [length]="totalItems"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onPageChange($event)"
+  ></mat-paginator>
+</div>
+
+
+
+
